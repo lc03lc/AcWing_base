@@ -11,8 +11,9 @@ int h[MAX];
 int idx;
 int dist[MAX];
 bool st[MAX];
+int cnt[MAX];
 
-int add(int a, int b, int c)
+void add(int a, int b, int c)
 {
     e[idx] = b;
     ne[idx] = h[a];
@@ -24,7 +25,7 @@ int add(int a, int b, int c)
 int main()
 {
     memset(h, -1, sizeof h);
-    memset(dist, 0x3f3f3f3f, sizeof dist);
+    // memset(dist, 0x3f3f3f3f, sizeof dist);
     int n, m;
     cin >> n >> m;
     for (int i = 0; i < m; i++)
@@ -35,9 +36,12 @@ int main()
     }
 
     queue<int> q;
-    q.push(1);
-    st[1] = 1;
-    dist[1] = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        q.push(i);
+        st[i] = 1;
+    }
+
     while (q.size())
     {
         int k = q.front();
@@ -50,6 +54,12 @@ int main()
             if (dist[j] > dist[k] + w[i])
             {
                 dist[j] = dist[k] + w[i];
+                cnt[j] = cnt[k] + 1;
+                if (cnt[j] >= n)
+                {
+                    cout << "Yes";
+                    exit(0);
+                }
                 if (!st[j])
                 {
                     q.push(j);
@@ -59,10 +69,5 @@ int main()
         }
     }
 
-    if(dist[n] > 0x3f3f3f3f/2)
-    {
-        cout << "impossible";
-    }else{
-        cout << dist[n];
-    }
+    cout << "No";
 }
